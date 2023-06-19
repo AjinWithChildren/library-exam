@@ -9,5 +9,10 @@ import bit.edu.exam.user.dto.UserInsertDTO;
  * @since 1.0
  */
 public interface UserService {
+    /**
+     * 회원가입을 위한 메서드입니다.
+     *
+     * @param userInsertDTO dto 에 유저의 정보가 기입됩니다.
+     */
     void signUp(UserInsertDTO userInsertDTO);
 }
