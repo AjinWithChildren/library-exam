@@ -15,14 +15,10 @@ import java.util.List;
  * @since : 1.0
  **/
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        BorrowService borrowService = new BorrowService();
-        borrowService.getUserBookList("user1");
-        System.out.println(borrowService.getUserBookList("user1"));
-
+    public static void main(String[] args) {
     }
 
-    public void bookListToJson(String userId) throws SQLException {
+    public void bookListToJson(String userId) {
         BorrowService borrowService = new BorrowService();
         List<UserBookDTO> userBookDTOList = borrowService.getUserBookList(userId);
 
