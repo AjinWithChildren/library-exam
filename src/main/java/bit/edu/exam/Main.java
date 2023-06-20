@@ -2,6 +2,7 @@ package bit.edu.exam;
 
 import bit.edu.exam.borrow.dto.UserBookDTO;
 import bit.edu.exam.borrow.service.BorrowService;
+import bit.edu.exam.util.FileUtils;
 import com.mysql.cj.xdevapi.JsonArray;
 
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ public class Main {
     public void bookListToJson(String userId) {
         BorrowService borrowService = new BorrowService();
         List<UserBookDTO> userBookDTOList = borrowService.getUserBookList(userId);
+        FileUtils.writeJsonFile(userBookDTOList, "borrowBookList");
 
     }
 }
