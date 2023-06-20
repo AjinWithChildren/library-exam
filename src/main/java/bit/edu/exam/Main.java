@@ -1,5 +1,13 @@
 package bit.edu.exam;
 
+import bit.edu.exam.borrow.dto.UserBookDTO;
+import bit.edu.exam.borrow.service.BorrowService;
+import com.mysql.cj.xdevapi.JsonArray;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Some description here.
  *
@@ -8,8 +16,11 @@ package bit.edu.exam;
  **/
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+    }
 
-        System.out.println("branch test2");
+    public void bookListToJson(String userId) {
+        BorrowService borrowService = new BorrowService();
+        List<UserBookDTO> userBookDTOList = borrowService.getUserBookList(userId);
+
     }
 }
