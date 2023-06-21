@@ -27,16 +27,14 @@ public class TurnInService {
     public List<BookTurnInDTO> noReturnDate(String userId){
 
         // 1. 아이디확인 -> user 담당이 한거 넣어지면 넣을께요 . . .
-        List<BookTurnInDTO> list = turnInDAO.noReturnDate(userId);
-        return list;
+        return turnInDAO.noReturnDate(userId);
     }
 
     // 반납완료목록
     public List<BookTurnInDTO> returnBook(String userId){
 
         // 1. 아이디확인 -> user 담당이 한거 넣어지면 넣을께요 . . .
-        List<BookTurnInDTO> list = turnInDAO.returnBook(userId);
-        return list;
+        return turnInDAO.returnBook(userId);
     }
 
 

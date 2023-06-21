@@ -36,17 +36,15 @@ public class TurnInDAO {
         connection = ConnectionManager.getConnection();
         List<BookTurnInDTO> list = new ArrayList<>();
 
-        String sql = "SELECT bc.book_seq, bu.user_id," +
-                "bi.book_title, bi.book_author, " +
-                "bu.borrow_start, bu.borrow_end, " +
-                "bu.return_date\n" +
-                "FROM book_copy bc \n" +
+        String sql = "SELECT bc.book_seq, bu.user_id, bi.book_title, bi.book_author, bu.borrow_start, bu.borrow_end, bu.return_date\n" +
+                "FROM book_copy bc\n" +
                 "JOIN book_info bi\n" +
-                "\ton bc.book_isbn = bi.book_isbn\n" +
+                "on bc.book_isbn = bi.book_isbn\n" +
                 "JOIN book_use_status bu\n" +
-                "\ton bc.book_seq = bu.book_seq\n" +
-                "WHERE bu.user_id = ?\n" +
-                "\tand bu.return_date is null; ";
+                "on bc.book_seq = bu.book_seq\n" +
+                "WHERE bu.user_id = 'user1'\n" +
+                "and bu.return_date is null\n" +
+                "and bu.borrow_end >= now();";
 
         try {
             statement = connection.prepareStatement(sql);
@@ -55,15 +53,13 @@ public class TurnInDAO {
 
             while (resultSet.next()){
 
-                int bookSeq = resultSet.getInt(1);
-                String userID = resultSet.getString(2);
-                String bookTitle = resultSet.getString(3);
-                String bookAuthor = resultSet.getString(4);
-                Date borrowStart = resultSet.getDate(5);
-                Date borrowEnd = resultSet.getDate(6);
-                Date returnDate = resultSet.getDate(7);
-
-                list.add(new BookTurnInDTO(bookSeq,userID,bookTitle,bookAuthor,borrowStart,borrowEnd,returnDate));
+                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
+                        resultSet.getString("userId"),
+                        resultSet.getString("bookTitle"),
+                        resultSet.getString("bookAuthor"),
+                        resultSet.getDate("borrowStart"),
+                        resultSet.getDate("borrowEnd"),
+                        resultSet.getDate("returnDate")));
             }
 
             resultSet.close();
@@ -139,15 +135,14 @@ public class TurnInDAO {
             statement.executeQuery();
 
             while (resultSet.next()){
-                int bookSeq = resultSet.getInt(1);
-                String userID = resultSet.getString(2);
-                String bookTitle = resultSet.getString(3);
-                String bookAuthor = resultSet.getString(4);
-                Date borrowStart = resultSet.getDate(5);
-                Date borrowEnd = resultSet.getDate(6);
-                Date returnDate = resultSet.getDate(7);
 
-                list.add(new BookTurnInDTO(bookSeq, userID, bookTitle, bookAuthor, borrowStart, borrowEnd, returnDate));
+                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
+                        resultSet.getString("userId"),
+                        resultSet.getString("bookTitle"),
+                        resultSet.getString("bookAuthor"),
+                        resultSet.getDate("borrowStart"),
+                        resultSet.getDate("borrowEnd"),
+                        resultSet.getDate("returnDate")));
             }
 
 
