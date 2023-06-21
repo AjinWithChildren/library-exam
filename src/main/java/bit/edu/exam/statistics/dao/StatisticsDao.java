@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 /**
- * Some description here.
+ * 도서관 통계를 처리하는 DAO 클래스 입니다..
  *
  * @author : 강명관
  * @since : 1.0
@@ -33,6 +33,11 @@ public class StatisticsDao {
         "FROM book_user AS bu " +
         "WHERE bu.user_id = ?";
 
+    /**
+     * 관리자 통계를 가져오는 메서드 입니다.
+     *
+     * @return Optional<StatisticsAdminDto>
+     */
     public Optional<StatisticsAdminDto> findByAdminLibraryStatistics() {
         Connection connection = ConnectionManager.getConnection();
 
@@ -57,6 +62,12 @@ public class StatisticsDao {
         return Optional.ofNullable(statisticsAdminDto);
     }
 
+    /**
+     * 회원의 통계를 가져오는 메서드 입니다.
+     *
+     * @param userId 회원 아이디
+     * @return Optional<StatisticsServiceDto>
+     */
     public Optional<StatisticsServiceDto> findByUserLibraryStatistics(String userId) {
         Connection connection = ConnectionManager.getConnection();
 
