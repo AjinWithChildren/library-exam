@@ -45,9 +45,11 @@ public class BookCopyDAO {
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE_BOOK_COPY_STATUS);
             statement.setString(1, status.getValue());
-            statement.setString(1, isbn);
+            statement.setString(2, isbn);
             statement.executeUpdate();
 
+            statement.close();
+            connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
