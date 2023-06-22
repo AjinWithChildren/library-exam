@@ -26,16 +26,12 @@ public class StatisticsDao {
         "FROM book_use_status";
 
     private static final String USER_STATISTICS_SQL =
-            "SELECT\n" +
-                "    (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL) AS current_total_borrow_count,\n" +
-                "    (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NOT NULL) AS current_turn_in_count,\n" +
-                "    (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now()) AS non_return_book,\n" +
-                "    (SELECT max_book - COUNT(case when bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now() then 1 end) FROM book_use_status as bus ) AS current_borrow_book,\n" +
-                "    (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end > now()) AS to_be_return_book,\n" +
-                "    bu.user_status,\n" +
-                "    bu.service_stop\n" +
-                "FROM book_user AS bu\n" +
-                "WHERE bu.user_id = ?";
+            "SELECT"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id) AS total_borrow_count,"+
+                    "(select count(bus.return_date) from book_use_status as bus where bus.user_id = bu.user_id) AS return_book_count,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end > now()) AS to_be_return_book,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now()) AS non_return_book"+
+                    "FROM book_user AS bu WHERE bu.user_id = ?";
 
 
     /**
@@ -55,7 +51,6 @@ public class StatisticsDao {
                 statisticsAdminDto = new StatisticsAdminDto(
                     resultSet.getInt("total_book_count"),
                     resultSet.getInt("total_borrow_count"),
-                    resultSet.getInt("current_borrow_book"),
                     resultSet.getInt("total_to_be_return_book"),
                     resultSet.getInt("total_non_return_book")
                 );

@@ -3,4 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <servlet>
+        <servlet-name>borrow</servlet-name>
+        <servlet-class>bit.edu.exam.borrow.servlet.BorrowServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>borrow</servlet-name>
+        <url-pattern>/borrow</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>statistics</servlet-name>
+        <servlet-class>bit.edu.exam.statistics.servlet.StatisticsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>statistics</servlet-name>
+        <url-pattern>/statistics</url-pattern>
+    </servlet-mapping>
+
 </web-app>

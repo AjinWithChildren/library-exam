@@ -9,15 +9,13 @@ package bit.edu.exam.statistics.dto.admin;
 public class StatisticsAdminDto {
     private int totalBookCount;
     private int totalBorrowCount;
-    private int currentBorrowBook;
     private int totalToBeReturnBook;
     private int totalNonReturnBook;
 
-    public StatisticsAdminDto(int totalBookCount, int totalBorrowCount,int currentBorrowBook,
-                              int totalToBeReturnBook, int totalNonReturnBook) {
+    public StatisticsAdminDto(int totalBookCount, int totalBorrowCount, int totalToBeReturnBook,
+                              int totalNonReturnBook) {
         this.totalBookCount = totalBookCount;
         this.totalBorrowCount = totalBorrowCount;
-        this.currentBorrowBook = currentBorrowBook;
         this.totalToBeReturnBook = totalToBeReturnBook;
         this.totalNonReturnBook = totalNonReturnBook;
     }
@@ -36,10 +34,6 @@ public class StatisticsAdminDto {
 
     public int getTotalNonReturnBook() {
         return totalNonReturnBook;
-    }
-
-    public int getCurrentBorrowBook() {
-        return currentBorrowBook;
     }
 }
 
