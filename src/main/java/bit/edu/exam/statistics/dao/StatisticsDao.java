@@ -55,7 +55,6 @@ public class StatisticsDao {
                 statisticsAdminDto = new StatisticsAdminDto(
                     resultSet.getInt("total_book_count"),
                     resultSet.getInt("total_borrow_count"),
-                    resultSet.getInt("current_borrow_book"),
                     resultSet.getInt("total_to_be_return_book"),
                     resultSet.getInt("total_non_return_book")
                 );
@@ -87,8 +86,10 @@ public class StatisticsDao {
             if (resultSet.next()) {
                 statisticsServiceDto = new StatisticsServiceDto(
                     resultSet.getInt("current_total_borrow_count"),
-                    resultSet.getInt("to_be_return_book"),
-                    resultSet.getInt("non_return_book")
+                    resultSet.getInt("current_turn_in_count"),
+                    resultSet.getInt("non_return_book"),
+                    resultSet.getInt("current_borrow_book"),
+                    resultSet.getInt("to_be_return_book")
                 );
             }
         } catch (SQLException e) {

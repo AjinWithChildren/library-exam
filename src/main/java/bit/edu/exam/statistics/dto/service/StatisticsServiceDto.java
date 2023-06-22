@@ -8,14 +8,19 @@ package bit.edu.exam.statistics.dto.service;
  **/
 public class StatisticsServiceDto {
     private int currentTotalBorrowCount;
-    private int toBeReturnBook;
+    private int currentTurnInCount;
     private int nonReturnBook;
+    private int currentBorrowBook;
+    private int toBeReturnBook;
 
-    public StatisticsServiceDto(int currentTotalBorrowCount, int toBeReturnBook,
-                                int nonReturnBook) {
+    public StatisticsServiceDto(int currentTotalBorrowCount,
+                                int currentTurnInCount, int nonReturnBook,
+                                int currentBorrowBook, int toBeReturnBook) {
         this.currentTotalBorrowCount = currentTotalBorrowCount;
-        this.toBeReturnBook = toBeReturnBook;
+        this.currentTurnInCount = currentTurnInCount;
         this.nonReturnBook = nonReturnBook;
+        this.currentBorrowBook = currentBorrowBook;
+        this.toBeReturnBook = toBeReturnBook;
     }
 
     public int getCurrentTotalBorrowCount() {
@@ -28,5 +33,13 @@ public class StatisticsServiceDto {
 
     public int getNonReturnBook() {
         return nonReturnBook;
+    }
+
+    public int getCurrentTurnInCount() {
+        return currentTurnInCount;
+    }
+
+    public int getCurrentBorrowBook() {
+        return currentBorrowBook;
     }
 }

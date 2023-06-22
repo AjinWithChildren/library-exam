@@ -31,7 +31,6 @@ public class StatisticsService {
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
-                    DEFAULT_VALUE,
                     DEFAULT_VALUE
                 )
             );
@@ -46,6 +45,8 @@ public class StatisticsService {
     public StatisticsServiceDto getUserStatistics(String userId) {
         return statisticsDao.findByUserLibraryStatistics(userId)
             .orElse(new StatisticsServiceDto(
+                    DEFAULT_VALUE,
+                    DEFAULT_VALUE,
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
                     DEFAULT_VALUE
