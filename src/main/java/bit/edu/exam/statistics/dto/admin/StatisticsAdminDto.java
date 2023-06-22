@@ -12,8 +12,8 @@ public class StatisticsAdminDto {
     private int totalToBeReturnBook;
     private int totalNonReturnBook;
 
-    public StatisticsAdminDto(int totalBookCount, int totalBorrowCount, int totalToBeReturnBook,
-                              int totalNonReturnBook) {
+    public StatisticsAdminDto(int totalBookCount, int totalBorrowCount,
+                              int totalToBeReturnBook, int totalNonReturnBook) {
         this.totalBookCount = totalBookCount;
         this.totalBorrowCount = totalBorrowCount;
         this.totalToBeReturnBook = totalToBeReturnBook;
@@ -35,5 +35,6 @@ public class StatisticsAdminDto {
     public int getTotalNonReturnBook() {
         return totalNonReturnBook;
     }
+
 }
 
