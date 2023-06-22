@@ -21,7 +21,7 @@ public class ConnectionManager {
 
         Connection con = null;
 
-        String url = "jdbc:mysql://localhost:3306/demo";
+        String url = "jdbc:mysql://localhost:3306/bitedu";
         String driver = "com.mysql.cj.jdbc.Driver";
         String username = "root";
         String password = "1q2w3e4r";
