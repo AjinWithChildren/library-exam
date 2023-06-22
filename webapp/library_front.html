@@ -18,9 +18,7 @@
             height: 40px;
             text-align: center;
         }
-        td.book_title {
-            width: 200px;
-        }
+
         span {
             margin-left: 150px;
         }
@@ -28,242 +26,109 @@
             margin-bottom: 20px;
         }
     </style>
-
+</head>
 <body>
-    <span><button id="list">user1 도서현황보기</button></span>
+    <span><button onclick="list()">user1 도서현황보기</button></span>
     <div id="container">
-        <div>
-            <input id="userIdInput" value="" placeholder="회원 아이디를 입력하세요.">
-            <button id="inquiryBtn" type="button">조회하기</button>
-        </div>
+    <div>
+        <table id="user_status">
+        <tr><td>대출도서</td><td>반납도서</td><td>미반납도서</td><td>반납예정도서</td><td>대출가능권수</td><td>이용상태</td><td>대출정지기간</td></tr>
+    </table>
+    </div>
+    <br>
+    <div>
+        <span>전체도서목록</span>
+        <table id="total">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody>
 
-        <div>
-            <table id="user_status">
-                <thead>
-                    <th>대출도서</th>
-                    <th>반납도서</th>
-                    <th>미반납도서</th>
-                    <th>반납예정도서</th>
-                    <th>대출가능권수</th>
-                    <th>이용상태</th>
-                    <th>대출정지기간</th>
-                </thead>
-                <tbody>
+            </tbody>
+        </table>
+    </div>
 
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <div>
-            <span>전체도서목록</span>
-            <table id="total">
-                <thead>
-                    <th>도서번호</th>
-                    <th>도서명</th>
-                    <th>저자</th>
-                    <th>대출일자</th>
-                    <th>반납기한</th>
-                    <th>반납일자</th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <span>전체반납목록</span>
-            <table id="returned">
-                <thead>
-                    <th>도서번호</th>
-                    <th>도서명</th>
-                    <th>저자</th>
-                    <th>대출일자</th>
-                    <th>반납기한</th>
-                    <th>반납일자</th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <span>미반납목록</span>
-            <table id="not_returned">
-                <thead>
-                    <th>도서번호</th>
-                    <th>도서명</th>
-                    <th>저자</th>
-                    <th>대출일자</th>
-                    <th>반납기한</th>
-                    <th>반납일자</th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-        <div>
-            <span>반납예정목록</span>
-            <table id="expecting_return">
-                <thead>
-                    <th>도서번호</th>
-                    <th>도서명</th>
-                    <th>저자</th>
-                    <th>대출일자</th>
-                    <th>반납기한</th>
-                    <th>반납일자</th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
+    <div>
+        <span>전체반납목록</span>
+        <table id="returned">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>            
+        </table>
+    </div>
+    <div>
+        <span>미반납목록</span>
+        <table id="not_returned">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div>
+        <span>반납예정목록</span>
+        <table id="expecting_return">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-
-    const userIdInput = document.querySelector("#userIdInput");
-    const inquiryBtn = document.querySelector("#inquiryBtn");
-
-    const userStatusTableBody = document.querySelector("#user_status tbody");
-    const totalTableBody = document.querySelector("#total tbody");
-    const returnedTableBody = document.querySelector("#returned tbody");
+    const totlaTableBody = document.querySelector("#totla tbody");
+    const returnedTableBody = document.querySelector("#returned tbody")
     const notReturnedTableBody = document.querySelector("#not_returned tbody");
     const expectingReturnTableBody = document.querySelector("#expecting_return tbody");
 
-    // document.addEventListener("DOMContentLoaded", () => {
-    //     getTotalBorrowBookList("user1");
-    // })
-
-
-    inquiryBtn.addEventListener("click", () => {
-        let userId = userIdInput.value;
-        if (userId === null || userId === "" || userId === undefined) {
-            alert("유저 아이디를 입력해주세요.");
-            return;
-        }
-
-        getTotalBorrowBookList(userId);
-        getReturned(userId);
-        getNotReturned(userId);
-        getExpectingReturn(userId);
+    document.addEventListener("DOMContentLoaded", () => {
+        // loadData();
+        test();
     })
 
-    /**
-     * 총 대출기록
-     *
-     * @param userId
-     */
-    async function getTotalBorrowBookList(userId) {
-        await fetch("/borrow?userId=" + userId,)
+    async function test() {
+        await fetch("/test")
             .then(response => response.json())
             .then(data => {
-                let temp = "";
-                for (let book of data) {
-
-                    console.log(book.returnDate);
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null || book.returnDate == "null" ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                totalTableBody.innerHTML = temp;
+                console.log(data);
             })
-            .catch(e => console.error(e));
+            .catch(e => {
+                console.error(e);
+            });
     }
 
-
-    /**
-     * 미반납 목록
-     *
-     * @param userId
-     */
-    async function getNotReturned(userId) {
-        await fetch("/turn-in/no-return?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                notReturnedTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
+    // function totalBook(data) {
+    //     let temp = "";
+    //     for(let key in data) {
+    //         temp +=
+    //         `
+    //             <tr>
+    //                 <td>${data[key].bookSeq}</td>
+    //                 <td>${data[key].}</td>
+    //             </tr>
+    //         `
+    //     }
+    // }
 
 
-    /**
-     * 전체반납목롣
-     * @param userId
-     */
-    async function getReturned(userId) {
-        await fetch("/turn-in/return?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                returnedTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 반납 예정 목록
-     *
-     * @param userId
-     */
-    async function getExpectingReturn(userId) {
-        await fetch("/turin-in/upcoming?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                expectingReturnTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
 </script>
 
 </body>
