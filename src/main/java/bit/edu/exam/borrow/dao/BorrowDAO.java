@@ -11,8 +11,9 @@ import java.util.List;
 
 public class BorrowDAO {
 
-    public boolean userBorrowStateCheck(String userId){
-        Connection connection = ConnectionManager.getConnection();
+    private static final String UPDATE_BOOK_POSITION = "UPDATE book_copy SET book_position = ? WHERE book_seq = ?;";
+
+    public boolean userBorrowStateCheck(Connection connection, String userId){
 
         String sql = "select service_stop from book_user where user_id = ?";
 
@@ -41,8 +42,7 @@ public class BorrowDAO {
         return serviceStopDate.isBefore(LocalDate.now());
     }
 
-    public boolean bookBorrowStateCheck(int bookSeq){
-        Connection connection = ConnectionManager.getConnection();
+    public boolean bookBorrowStateCheck(Connection connection, int bookSeq){
 
         String sql = "select book_position from book_copy where book_seq = ?";
 
@@ -68,10 +68,8 @@ public class BorrowDAO {
         return borrowCheck.equals("BS-0001");
     }
 
-    public boolean bookBorrow(BorrowDTO borrowDTO){
+    public boolean bookBorrow(Connection connection, BorrowDTO borrowDTO){
         boolean flag = false;
-
-        Connection connection = ConnectionManager.getConnection();
 
         String sql = "insert into book_use_status values(?, ?, ?, ?, null)";
         try {
@@ -89,8 +87,13 @@ public class BorrowDAO {
             statement.close();
 
         }catch (SQLException e){
-        e.printStackTrace();
-    }
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         return flag;
     }
 
@@ -135,6 +138,25 @@ public class BorrowDAO {
             e.printStackTrace();
         }
         return userBookDTOList;
+    }
+
+
+    public void updateBookPosition(Connection connection, String positionName, int bookSeq) {
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BOOK_POSITION);
+            preparedStatement.setString(1, positionName);
+            preparedStatement.setInt(2, bookSeq);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
     }
 
 }
