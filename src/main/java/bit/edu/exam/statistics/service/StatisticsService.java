@@ -47,6 +47,8 @@ public class StatisticsService {
             .orElse(new StatisticsServiceDto(
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
+                    DEFAULT_VALUE,
+                    DEFAULT_VALUE,
                     DEFAULT_VALUE
                 )
             );

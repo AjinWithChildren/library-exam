@@ -82,8 +82,10 @@ public class StatisticsDao {
             if (resultSet.next()) {
                 statisticsServiceDto = new StatisticsServiceDto(
                     resultSet.getInt("current_total_borrow_count"),
-                    resultSet.getInt("to_be_return_book"),
-                    resultSet.getInt("non_return_book")
+                    resultSet.getInt("current_turn_in_count"),
+                    resultSet.getInt("non_return_book"),
+                    resultSet.getInt("current_borrow_book"),
+                    resultSet.getInt("to_be_return_book")
                 );
             }
         } catch (SQLException e) {
