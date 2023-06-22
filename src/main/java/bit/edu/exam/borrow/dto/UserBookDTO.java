@@ -64,17 +64,4 @@ public class UserBookDTO {
             '}';
     }
 
-
-    //    @Override
-//    public String toString() {
-//        return "{" +
-//                "\"bookSeq\":" + bookSeq +
-//                ", \"userId\":" + "\"" + userId  + "\""  +
-//                ", \"bookTitle\":" + "\"" + bookTitle + "\"" +
-//                ", \"bookAuthor\":" + "\"" + bookAuthor + "\"" +
-//                ", \"borrowStart\":" + "\"" + borrowStart + "\"" +
-//                ", \"borrowEnd\":" + "\"" + borrowEnd + "\"" +
-//                ", \"returnDate\":" + "\"" + returnDate + "\"" +
-//                '}';
-//    }
 }
