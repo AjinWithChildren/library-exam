@@ -21,16 +21,10 @@ public class ConnectionManager {
 
         Connection con = null;
 
-        try (FileReader fileReader = new FileReader("src/main/resources/db.properties")) {
-            properties.load(fileReader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        String url = (String) properties.get("url");
-        String driver = (String) properties.get("driver");
-        String username = (String) properties.get("username");
-        String password = (String) properties.get("password");
+        String url = "jdbc:mysql://localhost:3306/demo";
+        String driver = "com.mysql.cj.jdbc.Driver";
+        String username = "root";
+        String password = "1q2w3e4r";
 
         try {
             Class.forName(driver);
