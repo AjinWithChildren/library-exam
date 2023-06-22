@@ -7,7 +7,7 @@ package bit.edu.exam.user.dto.type;
  * @since 1.0
  */
 public enum UserGrade {
-    GOLD(15), SLIVER(10), BRONZE(5);
+    A(15), B(10), C(5);
 
     private Integer maxBookValue;
 

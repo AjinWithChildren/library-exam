@@ -32,7 +32,7 @@ public class TurnInDAO {
     }
 
     // 반납예정목록 (select)
-    public List<BookTurnInDTO> noReturnDate(String userId) {
+    public List<BookTurnInDTO> returnUpComingList(String userId) {
         connection = ConnectionManager.getConnection();
         List<BookTurnInDTO> list = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class TurnInDAO {
                 "on bc.book_isbn = bi.book_isbn\n" +
                 "JOIN book_use_status bu\n" +
                 "on bc.book_seq = bu.book_seq\n" +
-                "WHERE bu.user_id = 'user1'\n" +
+                "WHERE bu.user_id = ?\n" +
                 "and bu.return_date is null\n" +
                 "and bu.borrow_end >= now();";
 
@@ -53,19 +53,18 @@ public class TurnInDAO {
 
             while (resultSet.next()){
 
-                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
-                        resultSet.getString("userId"),
-                        resultSet.getString("bookTitle"),
-                        resultSet.getString("bookAuthor"),
-                        resultSet.getDate("borrowStart"),
-                        resultSet.getDate("borrowEnd"),
-                        resultSet.getDate("returnDate")));
+                list.add(new BookTurnInDTO(resultSet.getInt("book_seq"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("book_author"),
+                        resultSet.getDate("borrow_start"),
+                        resultSet.getDate("borrow_end"),
+                        resultSet.getDate("return_date")));
             }
 
             resultSet.close();
             statement.close();
             connection.close();
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -74,8 +73,8 @@ public class TurnInDAO {
         return list;
     }
 
-    // 반납완료목록
-    public List<BookTurnInDTO> returnBook(String userId) {
+    // 전체 반납 목록
+    public List<BookTurnInDTO> returnBooks(String userId) {
         connection = ConnectionManager.getConnection();
         List<BookTurnInDTO> list = new ArrayList<>();
 
@@ -115,7 +114,7 @@ public class TurnInDAO {
     }
 
     // 미반납도서
-    public List<BookTurnInDTO> noReturnBook(String userId) {
+    public List<BookTurnInDTO> noReturnBooks(String userId) {
         connection = ConnectionManager.getConnection();
         List<BookTurnInDTO> list = new ArrayList<>();
 
@@ -132,17 +131,17 @@ public class TurnInDAO {
         try {
             statement = connection.prepareStatement(sql);
             statement.setString(1, userId);
-            statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             while (resultSet.next()){
 
-                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
-                        resultSet.getString("userId"),
-                        resultSet.getString("bookTitle"),
-                        resultSet.getString("bookAuthor"),
-                        resultSet.getDate("borrowStart"),
-                        resultSet.getDate("borrowEnd"),
-                        resultSet.getDate("returnDate")));
+                list.add(new BookTurnInDTO(resultSet.getInt("book_seq"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("book_author"),
+                        resultSet.getDate("borrow_start"),
+                        resultSet.getDate("borrow_end"),
+                        resultSet.getDate("return_date")));
             }
 
 

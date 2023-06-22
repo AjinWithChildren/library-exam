@@ -26,12 +26,13 @@ public class StatisticsDao {
         "FROM book_use_status";
 
     private static final String USER_STATISTICS_SQL =
-        "SELECT " +
-        "  (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL) AS current_total_borrow_count, " +
-        "  (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end > now()) AS to_be_return_book, " +
-        "  (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now()) AS non_return_book " +
-        "FROM book_user AS bu " +
-        "WHERE bu.user_id = ?";
+            "SELECT"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id) AS total_borrow_count,"+
+                    "(select count(bus.return_date) from book_use_status as bus where bus.user_id = bu.user_id) AS return_book_count,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end > now()) AS to_be_return_book,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now()) AS non_return_book"+
+                    "FROM book_user AS bu WHERE bu.user_id = ?";
+
 
     /**
      * 관리자 통계를 가져오는 메서드 입니다.

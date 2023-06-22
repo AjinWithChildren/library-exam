@@ -1,4 +1,4 @@
-package bit.edu.exam.user.exception;
+package bit.edu.exam.book.exception;
 
 /**
  * 설명작성란

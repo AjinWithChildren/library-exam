@@ -25,13 +25,41 @@ public class BookTurnInDTO {
     @Override
     public String toString() {
         return "BookTurnInDTO{" +
-                "bookSeq=" + bookSeq +
-                ", userId='" + userId + '\'' +
-                ", bookTitle='" + bookTitle + '\'' +
-                ", bookAuthor='" + bookAuthor + '\'' +
-                ", borrowStart=" + borrowStart +
-                ", borrowEnd=" + borrowEnd +
-                ", returnDate=" + returnDate +
-                '}';
+            "bookSeq=" + bookSeq +
+            ", userId='" + userId + '\'' +
+            ", bookTitle='" + bookTitle + '\'' +
+            ", bookAuthor='" + bookAuthor + '\'' +
+            ", borrowStart=" + borrowStart +
+            ", borrowEnd=" + borrowEnd +
+            ", returnDate=" + returnDate +
+            '}';
+    }
+
+    public Integer getBookSeq() {
+        return bookSeq;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getBookTitle() {
+        return bookTitle;
+    }
+
+    public String getBookAuthor() {
+        return bookAuthor;
+    }
+
+    public Date getBorrowStart() {
+        return borrowStart;
+    }
+
+    public Date getBorrowEnd() {
+        return borrowEnd;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
     }
 }

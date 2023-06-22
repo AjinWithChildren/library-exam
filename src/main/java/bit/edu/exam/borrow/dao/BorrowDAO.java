@@ -31,9 +31,9 @@ public class BorrowDAO {
                 }
                 serviceStopDate = resultDate.toLocalDate();
             }
-            connection.close();
-            statement.close();
-            resultSet.close();
+//            connection.close();
+//            statement.close();
+//            resultSet.close();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -56,9 +56,9 @@ public class BorrowDAO {
             if (resultSet.next()) {
                 borrowCheck = resultSet.getString(1);
             }
-            connection.close();
-            statement.close();
-            resultSet.close();
+//            connection.close();
+//            statement.close();
+//            resultSet.close();
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -83,8 +83,8 @@ public class BorrowDAO {
             if (statement.executeUpdate() == 1) {
                 flag = true;
             }
-            connection.close();
-            statement.close();
+//            connection.close();
+//            statement.close();
 
         }catch (SQLException e){
             e.printStackTrace();
