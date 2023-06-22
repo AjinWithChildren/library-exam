@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Service</title>
+    <style>
+        table, td {
+            border : 1px solid black;
+            border-collapse: collapse;
+            position: relative;
+            margin: 10px 150px;
+        }
+
+        td {
+            width : 100px;
+            height: 40px;
+            text-align: center;
+        }
+
+        span {
+            margin-left: 150px;
+        }
+        div {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <span><button onclick="list()">user1 도서현황보기</button></span>
+    <div id="container">
+    <div>
+        <table id="user_status">
+        <tr><td>대출도서</td><td>반납도서</td><td>미반납도서</td><td>반납예정도서</td><td>대출가능권수</td><td>이용상태</td><td>대출정지기간</td></tr>
+    </table>
+    </div>
+    <br>
+    <div>
+        <span>전체도서목록</span>
+        <table id="total">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <span>전체반납목록</span>
+        <table id="returned">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>            
+        </table>
+    </div>
+    <div>
+        <span>미반납목록</span>
+        <table id="not_returned">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div>
+        <span>반납예정목록</span>
+        <table id="expecting_return">
+            <thead>
+                <th>도서번호</th>
+                <th>도서명</th>
+                <th>저자</th>
+                <th>대출일자</th>
+                <th>반납일자</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const jsonFilePath = "./user1.json";
+    const totlaTableBody = document.querySelector("#totla tbody");
+    const returnedTableBody = document.querySelector("#returned tbody")
+    const notReturnedTableBody = document.querySelector("#not_returned tbody");
+    const expectingReturnTableBody = document.querySelector("#expecting_return tbody");
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // loadData();
+        test();
+    })
+
+    async function test() {
+        await fetch("/test")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(e => {
+                console.error(e);
+            });
+    }
+
+
+    async function loadData() {
+        await fetch(jsonFilePath)
+            .then(response => response.json())
+            .then(data => {
+
+            })
+            .catch(e => console.error(e))
+    }
+
+    // function totalBook(data) {
+    //     let temp = "";
+    //     for(let key in data) {
+    //         temp +=
+    //         `
+    //             <tr>
+    //                 <td>${data[key].bookSeq}</td>
+    //                 <td>${data[key].}</td>
+    //             </tr>
+    //         `
+    //     }
+    // }
+
+
+</script>
+
+</body>
+</html>
