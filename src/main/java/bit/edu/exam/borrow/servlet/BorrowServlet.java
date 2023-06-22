@@ -3,6 +3,8 @@ package bit.edu.exam.borrow.servlet;
 import bit.edu.exam.borrow.dto.UserBookDTO;
 import bit.edu.exam.borrow.service.BorrowService;
 
+import bit.edu.exam.util.ObjectMapperUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,10 @@ public class BorrowServlet extends HttpServlet {
 
         resp.setCharacterEncoding("UTF-8");
         PrintWriter printWriter = resp.getWriter();
-        printWriter.write(userBookList.toString());
+
+        ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
+        String result = objectMapper.writeValueAsString(userBookList);
+        printWriter.write(result);
 
     }
 }
