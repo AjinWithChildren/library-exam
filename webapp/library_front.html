@@ -218,11 +218,11 @@
                     temp +=
                         `
                         <tr>
-                            <td>${row.bookSeq}</td>
-                            <td>${row.bookTitle}</td>
-                            <td>${row.bookAuthor}</td>
-                            <td>${row.borrowStart}</td>
-                            <td>${row.borrowEnd}</td>
+                            <td>${row.currentTotalBorrowCount}</td>
+                            <td>${row.currentTurnInCount}</td>
+                            <td>${row.nonReturnBook}</td>
+                            <td>${row.currentBorrowBook}</td>
+                            <td>${row.toBeReturnBook}</td>
                             <td>${row.returnDate == null || row.returnDate == "null" ? '-' : row.returnDate}</td>
                         </tr>
                         `;
