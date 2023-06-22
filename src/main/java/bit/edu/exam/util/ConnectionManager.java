@@ -43,10 +43,10 @@ public class ConnectionManager {
 
 
 
-        String jdbcURL = "jdbc:mysql://localhost:3306/bitexam?useUnicode=true&serverTimezone=Asia/Seoul";
+        String jdbcURL = "jdbc:mysql://localhost:3306/bitedu?useUnicode=true&serverTimezone=Asia/Seoul";
         String driver = "com.mysql.cj.jdbc.Driver";
         String id = "root";
-        String password = "1234";
+        String password = "1q2w3e4r";
 
 
         try {

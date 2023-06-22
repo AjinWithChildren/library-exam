@@ -15,12 +15,11 @@ import java.util.Set;
 
 public class BorrowServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BorrowService borrowService = new BorrowService();
 
-        String parameter = req.getParameter("user-id");
+        String parameter = req.getParameter("userId");
         System.out.println(parameter);
         List<UserBookDTO> userBookList = borrowService.getUserBookList(parameter);
         System.out.println(userBookList);

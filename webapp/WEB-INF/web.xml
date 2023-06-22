@@ -9,7 +9,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>borrow</servlet-name>
-        <url-pattern>/borrow/*</url-pattern>
         <url-pattern>/borrow</url-pattern>
     </servlet-mapping>
 
