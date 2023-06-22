@@ -31,6 +31,7 @@ public class StatisticsService {
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
+                    DEFAULT_VALUE,
                     DEFAULT_VALUE
                 )
             );
