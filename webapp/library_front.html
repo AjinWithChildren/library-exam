@@ -94,7 +94,6 @@
 </div>
 
 <script>
-    const jsonFilePath = "./user1.json";
     const totlaTableBody = document.querySelector("#totla tbody");
     const returnedTableBody = document.querySelector("#returned tbody")
     const notReturnedTableBody = document.querySelector("#not_returned tbody");
@@ -114,16 +113,6 @@
             .catch(e => {
                 console.error(e);
             });
-    }
-
-
-    async function loadData() {
-        await fetch(jsonFilePath)
-            .then(response => response.json())
-            .then(data => {
-
-            })
-            .catch(e => console.error(e))
     }
 
     // function totalBook(data) {
