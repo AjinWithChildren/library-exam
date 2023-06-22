@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -21,39 +19,19 @@ public class StatisticsDao {
 
     private static final String ADMIN_STATISTICS_SQL =
         "SELECT " +
-            " DISTINCT((SELECT COUNT(*) FROM book_copy AS bc)) AS total_book_count, " +
-            " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL) AS total_borrow_count, " +
-            " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL AND bus.borrow_end > now()) AS total_to_be_return_book, " +
-            " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL AND bus.borrow_end <= now()) AS total_non_return_book " +
-            "FROM book_use_status";
+        " DISTINCT((SELECT COUNT(*) FROM book_copy AS bc)) AS total_book_count, " +
+        " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL) AS total_borrow_count, " +
+        " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL AND bus.borrow_end > now()) AS total_to_be_return_book, " +
+        " (SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.return_date IS NULL AND bus.borrow_end <= now()) AS total_non_return_book " +
+        "FROM book_use_status";
 
     private static final String USER_STATISTICS_SQL =
-        "SELECT (SELECT COUNT(*)\n" +
-            "        FROM book_use_status AS bus\n" +
-            "        WHERE bus.user_id = bu.user_id\n" +
-            "          AND bus.return_date IS NULL)     AS current_total_borrow_count,\n" +
-            "       (SELECT COUNT(*)\n" +
-            "        FROM book_use_status AS bus\n" +
-            "        WHERE bus.user_id = bu.user_id\n" +
-            "          AND bus.return_date IS NOT NULL) AS current_turn_in_count,\n" +
-            "       (SELECT COUNT(*)\n" +
-            "        FROM book_use_status AS bus\n" +
-            "        WHERE bus.user_id = bu.user_id\n" +
-            "          AND bus.return_date IS NULL\n" +
-            "          AND bus.borrow_end <= now())     AS non_return_book,\n" +
-            "       (SELECT max_book - COUNT(case\n" +
-            "                                    when bus.user_id = bu.user_id AND bus.return_date IS NULL AND\n" +
-            "                                         bus.borrow_end <= now() then 1 end)\n" +
-            "        FROM book_use_status as bus)       AS max_book_count,\n" +
-            "       (SELECT COUNT(*)\n" +
-            "        FROM book_use_status AS bus\n" +
-            "        WHERE bus.user_id = bu.user_id\n" +
-            "          AND bus.return_date IS NULL\n" +
-            "          AND bus.borrow_end > now())      AS to_be_return_book,\n" +
-            "       bu.user_status                      AS user_status,\n" +
-            "       bu.service_stop                     AS user_service_stop\n" +
-            "FROM book_user AS bu\n" +
-            "WHERE bu.user_id = ?";
+            "SELECT"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id) AS total_borrow_count,"+
+                    "(select count(bus.return_date) from book_use_status as bus where bus.user_id = bu.user_id) AS return_book_count,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end > now()) AS to_be_return_book,"+
+                    "(SELECT COUNT(*) FROM book_use_status AS bus WHERE bus.user_id = bu.user_id AND bus.return_date IS NULL AND bus.borrow_end <= now()) AS non_return_book"+
+                    "FROM book_user AS bu WHERE bu.user_id = ?";
 
 
     /**
@@ -106,10 +84,8 @@ public class StatisticsDao {
                     resultSet.getInt("current_total_borrow_count"),
                     resultSet.getInt("current_turn_in_count"),
                     resultSet.getInt("non_return_book"),
-                    resultSet.getInt("max_book_count"),
-                    resultSet.getInt("to_be_return_book"),
-                    resultSet.getString("user_status"),
-                    resultSet.getDate("user_service_stop")
+                    resultSet.getInt("current_borrow_book"),
+                    resultSet.getInt("to_be_return_book")
                 );
             }
         } catch (SQLException e) {

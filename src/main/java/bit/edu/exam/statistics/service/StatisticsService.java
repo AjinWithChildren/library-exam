@@ -11,12 +11,14 @@ import bit.edu.exam.statistics.dto.service.StatisticsServiceDto;
  * @since : 1.0
  **/
 public class StatisticsService {
-    private static final int DEFAULT_VALUE = 0;
     private final StatisticsDao statisticsDao;
 
     public StatisticsService() {
         this.statisticsDao = new StatisticsDao();
     }
+
+    private static final int DEFAULT_VALUE = 0;
+
 
     /**
      * 관리자 통계를 가져오는 메서드 입니다.
@@ -47,9 +49,7 @@ public class StatisticsService {
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
                     DEFAULT_VALUE,
-                    DEFAULT_VALUE,
-                    null,
-                    null
+                    DEFAULT_VALUE
                 )
             );
     }
