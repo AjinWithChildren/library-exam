@@ -88,6 +88,10 @@
         #expecting_return th {
             background-color: #ccf2ff;
         }
+
+        #user_status tbody td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -208,26 +212,23 @@
 
 
     async function getUserStatus(userId) {
-        await fetch("/statistics-user" + userId)
+        await fetch("/statistics-user?userId=" + userId)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
-                let temp = "";
-                for (let row of data) {
-                    temp +=
+                let row =
                         `
                         <tr>
-                            <td>${row.bookSeq}</td>
-                            <td>${row.bookTitle}</td>
-                            <td>${row.bookAuthor}</td>
-                            <td>${row.borrowStart}</td>
-                            <td>${row.borrowEnd}</td>
-                            <td>${row.returnDate == null || row.returnDate == "null" ? '-' : row.returnDate}</td>
+                            <td>${data.currentTotalBorrowCount}</td>
+                            <td>${data.currentTurnInCount}</td>
+                            <td>${data.nonReturnBook}</td>
+                            <td>${data.maxBookCount}</td>
+                            <td>${data.toBeReturnBook}</td>
+                            <td>${data.userStatus}</td>
+                            <td>${data.userServiceStop == null || data.userServiceStop == "null" ? '-' : data.userServiceStop}</td>
                         </tr>
                         `;
-                }
-                userStatusTableBody.innerHTML = temp;
+                userStatusTableBody.innerHTML = row;
             })
             .catch(e => console.error(e));
     }
@@ -250,8 +251,6 @@
                             <td>${book.bookTitle}</td>
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.borrowEnd}</td>
                             <td>${book.borrowEnd}</td>
                             <td>${book.returnDate == null || book.returnDate == "null" ? '-' : book.returnDate}</td>
                         </tr>
