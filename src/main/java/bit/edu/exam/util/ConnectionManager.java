@@ -1,5 +1,7 @@
 package bit.edu.exam.util;
 
+import bit.edu.exam.Main;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,30 +17,44 @@ import java.util.Properties;
  **/
 public class ConnectionManager {
 
-    private static final Properties properties = new Properties();
+//    private static final Properties properties = new Properties();
 
     public static Connection getConnection() {
 
         Connection con = null;
+//
+//        System.out.println(Main.class.getClass().getResource("db.properties"));
+//
+//        System.out.println(System.getProperty("user.dir"));
 
-        try (FileReader fileReader = new FileReader("src/main/resources/db.properties")) {
-            properties.load(fileReader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            properties.load(Main.class.getClass().getResourceAsStream("db.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        try (FileReader fileReader = new FileReader("src/main/resources/db.properties")) {
+//            properties.load(fileReader);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        String url = (String) properties.get("url");
-        String driver = (String) properties.get("driver");
-        String username = (String) properties.get("username");
-        String password = (String) properties.get("password");
+
+
+
+
+
+        String jdbcURL = "jdbc:mysql://localhost:3306/bitexam?useUnicode=true&serverTimezone=Asia/Seoul";
+        String driver = "com.mysql.cj.jdbc.Driver";
+        String id = "root";
+        String password = "1234";
+
 
         try {
             Class.forName(driver);
-            con = DriverManager.getConnection(url,username,password);
-        } catch (ClassNotFoundException | SQLException e) {
+            con = DriverManager.getConnection(jdbcURL,id,password);
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         return con;
     }
 }
