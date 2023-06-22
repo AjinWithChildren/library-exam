@@ -53,19 +53,18 @@ public class TurnInDAO {
 
             while (resultSet.next()){
 
-                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
-                        resultSet.getString("userId"),
-                        resultSet.getString("bookTitle"),
-                        resultSet.getString("bookAuthor"),
-                        resultSet.getDate("borrowStart"),
-                        resultSet.getDate("borrowEnd"),
-                        resultSet.getDate("returnDate")));
+                list.add(new BookTurnInDTO(resultSet.getInt("book_seq"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("book_author"),
+                        resultSet.getDate("borrow_start"),
+                        resultSet.getDate("borrow_end"),
+                        resultSet.getDate("return_date")));
             }
 
             resultSet.close();
             statement.close();
             connection.close();
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -132,17 +131,17 @@ public class TurnInDAO {
         try {
             statement = connection.prepareStatement(sql);
             statement.setString(1, userId);
-            statement.executeQuery();
+            resultSet = statement.executeQuery();
 
             while (resultSet.next()){
 
-                list.add(new BookTurnInDTO(resultSet.getInt("bookSeq"),
-                        resultSet.getString("userId"),
-                        resultSet.getString("bookTitle"),
-                        resultSet.getString("bookAuthor"),
-                        resultSet.getDate("borrowStart"),
-                        resultSet.getDate("borrowEnd"),
-                        resultSet.getDate("returnDate")));
+                list.add(new BookTurnInDTO(resultSet.getInt("book_seq"),
+                        resultSet.getString("user_id"),
+                        resultSet.getString("book_title"),
+                        resultSet.getString("book_author"),
+                        resultSet.getDate("borrow_start"),
+                        resultSet.getDate("borrow_end"),
+                        resultSet.getDate("return_date")));
             }
 
 

@@ -7,7 +7,7 @@ package bit.edu.exam.user.dto.type;
  * @since 1.0
  */
 public enum UserStatus {
-    MEMBER("회원"), STOP("정지");
+    M("회원"), S("정지");
     private String value;
 
     UserStatus(String value) {

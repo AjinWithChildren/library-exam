@@ -22,34 +22,6 @@ public class BookTurnInDTO {
         this.returnDate = returnDate;
     }
 
-    public Integer getBookSeq() {
-        return bookSeq;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getBookTitle() {
-        return bookTitle;
-    }
-
-    public String getBookAuthor() {
-        return bookAuthor;
-    }
-
-    public Date getBorrowStart() {
-        return borrowStart;
-    }
-
-    public Date getBorrowEnd() {
-        return borrowEnd;
-    }
-
-    public Date getReturnDate() {
-        return returnDate;
-    }
-
     @Override
     public String toString() {
         return "BookTurnInDTO{" +

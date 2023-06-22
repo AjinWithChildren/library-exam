@@ -20,11 +20,7 @@ public class BorrowServlet extends HttpServlet {
         BorrowService borrowService = new BorrowService();
 
         String parameter = req.getParameter("userId");
-        System.out.println(parameter);
         List<UserBookDTO> userBookList = borrowService.getUserBookList(parameter);
-        System.out.println(userBookList);
-
-        // localhost:8080/borrow?user-id=user14
 
         resp.setCharacterEncoding("UTF-8");
         PrintWriter printWriter = resp.getWriter();

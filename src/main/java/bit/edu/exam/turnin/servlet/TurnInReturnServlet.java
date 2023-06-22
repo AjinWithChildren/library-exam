@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0
  */
 
-@WebServlet(name = "turnInReturn", urlPatterns = "/turn-in/return")
+@WebServlet(name = "turnInReturn", value = "/turn-in/return")
 public class TurnInReturnServlet extends HttpServlet {
     private final TurnInService turnInService;
 

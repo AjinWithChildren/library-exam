@@ -167,6 +167,8 @@
             .then(data => {
                 let temp = "";
                 for (let book of data) {
+
+                    console.log(book.returnDate);
                     temp +=
                         `
                         <tr>
@@ -175,7 +177,7 @@
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
                             <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate}</td>
+                            <td>${book.returnDate == null || book.returnDate == "null" ? '-' : book.returnDate}</td>
                         </tr>
                         `;
                 }
@@ -204,7 +206,7 @@
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
                             <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate}</td>
+                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
                         </tr>
                         `;
                 }
@@ -232,7 +234,7 @@
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
                             <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate}</td>
+                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
                         </tr>
                         `;
                 }
@@ -260,7 +262,7 @@
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
                             <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate}</td>
+                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
                         </tr>
                         `;
                 }
