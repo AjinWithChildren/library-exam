@@ -3,6 +3,7 @@ package bit.edu.exam.turnin.servlet;
 import bit.edu.exam.turnin.service.TurnInService;
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author : 유호철
  * @since 1.0
  */
+@WebServlet(name = "turnIn", urlPatterns = "/turn-in")
 public class TurnInServlet extends HttpServlet {
     private final TurnInService turnInService;
 
