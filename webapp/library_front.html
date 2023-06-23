@@ -92,6 +92,43 @@
         #user_status tbody td {
             text-align: center;
         }
+
+        /* 대출 가능한 책 테이블 스타일 */
+        #borrow_book {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        #borrow_book th,
+        #borrow_book td {
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+
+        #borrow_book th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #borrow_book td {
+            text-align: center;
+        }
+
+        /* 대출하기 버튼 스타일 */
+        #borrow_book button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        #borrow_book button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -111,6 +148,21 @@
                     <th>대출가능권수</th>
                     <th>이용상태</th>
                     <th>대출정지기간</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <sapn>대출 가능 한 책</sapn>
+            <table id="borrow_book">
+                <thead>
+                    <th>도서번호</th>
+                    <th>도서명</th>
+                    <th>저자</th>
+                    <th></th>
                 </thead>
                 <tbody>
 
@@ -195,6 +247,9 @@
     const returnedTableBody = document.querySelector("#returned tbody");
     const notReturnedTableBody = document.querySelector("#not_returned tbody");
     const expectingReturnTableBody = document.querySelector("#expecting_return tbody");
+    const canBorrowBookTableBody = document.querySelector("#borrow_book tbody");
+
+    let userIdGlobalVariable = "";
 
     inquiryBtn.addEventListener("click", () => {
         let userId = userIdInput.value;
@@ -203,11 +258,14 @@
             return;
         }
 
+        userIdGlobalVariable = userId;
+
         getUserStatus(userId);
         getTotalBorrowBookList(userId);
         getReturned(userId);
         getNotReturned(userId);
         getExpectingReturn(userId);
+        getCanBorrowBookList();
     })
 
 
@@ -340,6 +398,92 @@
                         `;
                 }
                 expectingReturnTableBody.innerHTML = temp;
+            })
+            .catch(e => console.error(e));
+    }
+
+    /**
+     * 대출 가능한 책 리스트 가져오기
+     *
+     * @returns {Promise<void>}
+     */
+    async function getCanBorrowBookList() {
+        await fetch("/borrow-not")
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let temp = "";
+                for (let book of data) {
+                    temp +=
+                        `
+                            <tr>
+                                <td>${book.bookSeq}</td>
+                                <td>${book.bookTitle}</td>
+                                <td>${book.bookAuthor}</td>
+                                <td>
+                                    <button type="button" onclick="borrowBook(${book.bookSeq})">대출하기</button>
+                                </td>
+                            </tr>
+                        `
+                }
+                canBorrowBookTableBody.innerHTML = temp;
+            })
+            .catch(e => console.error(e));
+    }
+
+    /**
+     * 책 대출하기 버튼 이벤트 메서드
+     *
+     * @param bookSeq
+     */
+    async function borrowBook(bookSeq) {
+        console.log(bookSeq);
+
+        let requestBody = {
+            "bookSeq": bookSeq,
+            "userId" : userIdGlobalVariable
+        };
+
+        await fetch("/borrowBook", {
+            method: "POST",
+            body: requestBody
+        })
+            .then(response => {
+                if (response.status !== 200) {
+                    alert("대출에 실패했습니다.");
+                    return;
+                }
+
+                response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(e => console.error(e));
+
+    }
+
+    async function returnBook(bookSeq) {
+        console.log(bookSeq);
+
+        let requestBody = {
+            "bookSeq": bookSeq,
+            "userId" : userIdGlobalVariable
+        };
+
+        await fetch("/returnBook", {
+            method: "POST",
+            body: requestBody
+        })
+            .then(response => {
+                if (response.status !== 200) {
+                    alert("반납에 실패했습니다.");
+                    return;
+                }
+                response.json();
+            })
+            .then(data => {
+                console.log(data);
             })
             .catch(e => console.error(e));
     }
