@@ -92,43 +92,6 @@
         #user_status tbody td {
             text-align: center;
         }
-
-        /* 대출 가능한 책 테이블 스타일 */
-        #borrow_book {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        #borrow_book th,
-        #borrow_book td {
-            padding: 8px;
-            border: 1px solid #ccc;
-        }
-
-        #borrow_book th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        #borrow_book td {
-            text-align: center;
-        }
-
-        /* 대출하기 버튼 스타일 */
-        #borrow_book button {
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        #borrow_book button:hover {
-            background-color: #45a049;
-        }
     </style>
 </head>
 <body>
@@ -148,21 +111,6 @@
                     <th>대출가능권수</th>
                     <th>이용상태</th>
                     <th>대출정지기간</th>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <sapn>대출 가능 한 책</sapn>
-            <table id="borrow_book">
-                <thead>
-                    <th>도서번호</th>
-                    <th>도서명</th>
-                    <th>저자</th>
-                    <th></th>
                 </thead>
                 <tbody>
 
@@ -247,9 +195,6 @@
     const returnedTableBody = document.querySelector("#returned tbody");
     const notReturnedTableBody = document.querySelector("#not_returned tbody");
     const expectingReturnTableBody = document.querySelector("#expecting_return tbody");
-    const canBorrowBookTableBody = document.querySelector("#borrow_book tbody");
-
-    let userIdGlobalVariable = "";
 
     inquiryBtn.addEventListener("click", () => {
         let userId = userIdInput.value;
@@ -258,26 +203,14 @@
             return;
         }
 
-        userIdGlobalVariable = userId;
-
-        librarySystemLogicFunction(userId);
-    })
-
-    function librarySystemLogicFunction(userId) {
         getUserStatus(userId);
         getTotalBorrowBookList(userId);
         getReturned(userId);
         getNotReturned(userId);
         getExpectingReturn(userId);
-        getCanBorrowBookList();
-    }
+    })
 
 
-    /**
-     * 유저의 상태를 나타내는 테이블
-     *
-     * @param userId
-     */
     async function getUserStatus(userId) {
         await fetch("/statistics-user?userId=" + userId)
             .then(response => response.json())
@@ -319,25 +252,9 @@
                             <td>${book.bookAuthor}</td>
                             <td>${book.borrowStart}</td>
                             <td>${book.borrowEnd}</td>
+                            <td>${book.returnDate == null || book.returnDate == "null" ? '-' : book.returnDate}</td>
+                        </tr>
                         `;
-
-                    if (book.returnDate == null || book.returnDate == "null") {
-                        temp +=
-                            `
-                                <td>
-                                    <button type="button" onclick="returnBook(${book.bookSeq})">반납하기</button>
-                                </td>
-                            </tr>
-                            `;
-                    } else {
-                        temp +=
-                            `
-                                <td>
-                                    ${book.returnDate}
-                                </td>
-                            </tr>
-                            `
-                    }
                 }
                 totalTableBody.innerHTML = temp;
             })
@@ -423,76 +340,6 @@
                         `;
                 }
                 expectingReturnTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 대출 가능한 책 리스트 가져오기
-     *
-     * @returns {Promise<void>}
-     */
-    async function getCanBorrowBookList() {
-        await fetch("/borrow-not")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                            <tr>
-                                <td>${book.bookNo}</td>
-                                <td>${book.bookTitle}</td>
-                                <td>${book.bookAuthor}</td>
-                                <td>
-                                    <button type="button" onclick="borrowBook(${book.bookNo})">대출하기</button>
-                                </td>
-                            </tr>
-                        `
-                }
-                canBorrowBookTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 책 대출하기 버튼 이벤트 메서드
-     *
-     * @param bookSeq
-     */
-    async function borrowBook(bookSeq) {
-        console.log(bookSeq);
-
-        await fetch("/borrow?userId=" + userIdGlobalVariable + "&bookSeq=" + bookSeq, {
-            method: "POST"
-        })
-            .then(response => {
-                if (response.status !== 200) {
-                    alert("대출에 실패했습니다.");
-                    return;
-                }
-                alert(bookSeq + " 번 책 대출에 성공하였습니다!");
-                librarySystemLogicFunction(userIdGlobalVariable);
-            })
-            .catch(e => console.error(e));
-
-    }
-
-    async function returnBook(bookSeq) {
-        console.log(bookSeq);
-
-        await fetch("/turn-in?userId=" + userIdGlobalVariable + "&bookSeq=" + bookSeq, {
-            method: "POST",
-        })
-            .then(response => {
-                if (response.status !== 200) {
-                    alert("반납에 실패했습니다.");
-                    return;
-                }
-
-                alert(bookSeq + "번 책 반납에 성공하였습니다!");
-                librarySystemLogicFunction(userIdGlobalVariable);
             })
             .catch(e => console.error(e));
     }
