@@ -18,7 +18,7 @@ public class BorrowDAO {
     private static final String UPDATE_BOOK_POSITION = "UPDATE book_copy SET book_position = ? WHERE book_seq = ?;";
     private static final String SELECT_BORROW_BOOKS = "select bc.book_seq AS book_no,\n" +
         "       bi.book_title AS book_title,\n" +
-        "       bi.book_author AS book_autohr\n" +
+        "       bi.book_author AS book_author\n" +
         "from book_copy as bc\n" +
         "    left join book_info bi on bi.book_isbn = bc.book_isbn\n" +
         "    left outer join book_use_status bus\n" +

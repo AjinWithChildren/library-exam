@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0
  */
 
-@WebServlet(value = "notBorrow",urlPatterns = "/borrow-not")
+@WebServlet(name = "notBorrow",urlPatterns = "/borrow-not")
 public class NotBorrowServlet extends HttpServlet {
     private final BorrowService borrowService;
 
