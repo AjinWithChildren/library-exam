@@ -31,4 +31,12 @@ public class BorrowServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         writer.write(value);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String userId = req.getParameter("userId");
+        Integer bookSeq = Integer.parseInt(req.getParameter("bookSeq"));
+
+        borrowService.borrowBook(userId, bookSeq);
+    }
 }
