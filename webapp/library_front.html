@@ -236,266 +236,54 @@
             </table>
         </div>
 </div>
-
 <script>
+   const userIdInput = document.querySelector("#userIdInput");
+   const inquiryBtn = document.querySelector("#inquiryBtn");
 
-    const userIdInput = document.querySelector("#userIdInput");
-    const inquiryBtn = document.querySelector("#inquiryBtn");
+   const userStatusTbody = document.querySelector("#user_status tbody");
+   const borrowBookTbody = document.querySelector("#borrow_book");
+   const totalTbody = document.querySelector("#total");
+   const returnedTbody = document.querySelector("#returned");
+   const notReturnedTbody = document.querySelector("#not_returned");
+   const expectingReturnTbody = document.querySelector("#expecting_return");
 
-    const userStatusTableBody = document.querySelector("#user_status tbody");
-    const totalTableBody = document.querySelector("#total tbody");
-    const returnedTableBody = document.querySelector("#returned tbody");
-    const notReturnedTableBody = document.querySelector("#not_returned tbody");
-    const expectingReturnTableBody = document.querySelector("#expecting_return tbody");
-    const canBorrowBookTableBody = document.querySelector("#borrow_book tbody");
+   inquiryBtn.addEventListener("click", () => {
+       let userId = userIdInput
+       if(userId === null || userId === 'null' || userId === undefined){
+           alert("회원 번호를 다시 입력해주세요.");
+       }else{
+       addUserId(userId);
+   }}
+   )
 
-    let userIdGlobalVariable = "";
+   function addUserId(userId){
+     userStatusInBody(userId);
+   };
 
-    inquiryBtn.addEventListener("click", () => {
-        let userId = userIdInput.value;
-        if (userId === null || userId === "" || userId === undefined) {
-            alert("유저 아이디를 입력해주세요.");
-            return;
-        }
+   async function userStatusInBody(userId){
+       await fetch("/statistics-user?userId=" + userId)
+           .then(response => response.json())
+           .then(data => {
+               console.log(data)
+               let row =
+               `
+                <tr>
+                <td>${data.currentTotalBorrowCount}</td>
+                <td>${data.currentTurnInCount}</td>
+                <td>${data.nonReturnBook}</td>
+                <td>${data.maxBookCount}</td>
+                <td>${data.toBeReturnBook}</td>
+                <td>${data.userStatus}</td>
+                <td>${data.userServiceStop}</td>
+                </tr>
+               `;
+               userStatusTbody.innerHTML = row;
+           })
 
-        userIdGlobalVariable = userId;
-
-        librarySystemLogicFunction(userId);
-    })
-
-    function librarySystemLogicFunction(userId) {
-        getUserStatus(userId);
-        getTotalBorrowBookList(userId);
-        getReturned(userId);
-        getNotReturned(userId);
-        getExpectingReturn(userId);
-        getCanBorrowBookList();
-    }
+   }
 
 
-    /**
-     * 유저의 상태를 나타내는 테이블
-     *
-     * @param userId
-     */
-    async function getUserStatus(userId) {
-        await fetch("/statistics-user?userId=" + userId)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                let row =
-                        `
-                        <tr>
-                            <td>${data.currentTotalBorrowCount}</td>
-                            <td>${data.currentTurnInCount}</td>
-                            <td>${data.nonReturnBook}</td>
-                            <td>${data.maxBookCount}</td>
-                            <td>${data.toBeReturnBook}</td>
-                            <td>${data.userStatus}</td>
-                            <td>${data.userServiceStop == null || data.userServiceStop == "null" ? '-' : data.userServiceStop}</td>
-                        </tr>
-                        `;
-                userStatusTableBody.innerHTML = row;
-            })
-            .catch(e => console.error(e));
-    }
 
-    /**
-     * 총 대출기록
-     *
-     * @param userId
-     */
-    async function getTotalBorrowBookList(userId) {
-        await fetch("/borrow?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td>${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                        `;
-
-                    if (book.returnDate == null || book.returnDate == "null") {
-                        temp +=
-                            `
-                                <td>
-                                    <button type="button" onclick="returnBook(${book.bookSeq})">반납하기</button>
-                                </td>
-                            </tr>
-                            `;
-                    } else {
-                        temp +=
-                            `
-                                <td>
-                                    ${book.returnDate}
-                                </td>
-                            </tr>
-                            `
-                    }
-                }
-                totalTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 미반납 목록
-     *
-     * @param userId
-     */
-    async function getNotReturned(userId) {
-        await fetch("/turn-in/no-return?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                notReturnedTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 전체반납목롣
-     * @param userId
-     */
-    async function getReturned(userId) {
-        await fetch("/turn-in/return?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                returnedTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 반납 예정 목록
-     *
-     * @param userId
-     */
-    async function getExpectingReturn(userId) {
-        await fetch("/turin-in/upcoming?userId=" + userId,)
-            .then(response => response.json())
-            .then(data => {
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                        <tr>
-                            <td>${book.bookSeq}</td>
-                            <td class="book_title">${book.bookTitle}</td>
-                            <td>${book.bookAuthor}</td>
-                            <td>${book.borrowStart}</td>
-                            <td>${book.borrowEnd}</td>
-                            <td>${book.returnDate == null ? '-' : book.returnDate}</td>
-                        </tr>
-                        `;
-                }
-                expectingReturnTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 대출 가능한 책 리스트 가져오기
-     *
-     * @returns {Promise<void>}
-     */
-    async function getCanBorrowBookList() {
-        await fetch("/borrow-not")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                let temp = "";
-                for (let book of data) {
-                    temp +=
-                        `
-                            <tr>
-                                <td>${book.bookNo}</td>
-                                <td>${book.bookTitle}</td>
-                                <td>${book.bookAuthor}</td>
-                                <td>
-                                    <button type="button" onclick="borrowBook(${book.bookNo})">대출하기</button>
-                                </td>
-                            </tr>
-                        `
-                }
-                canBorrowBookTableBody.innerHTML = temp;
-            })
-            .catch(e => console.error(e));
-    }
-
-    /**
-     * 책 대출하기 버튼 이벤트 메서드
-     *
-     * @param bookSeq
-     */
-    async function borrowBook(bookSeq) {
-        console.log(bookSeq);
-
-        await fetch("/borrow?userId=" + userIdGlobalVariable + "&bookSeq=" + bookSeq, {
-            method: "POST"
-        })
-            .then(response => {
-                if (response.status !== 200) {
-                    alert("대출에 실패했습니다.");
-                    return;
-                }
-                alert(bookSeq + " 번 책 대출에 성공하였습니다!");
-                librarySystemLogicFunction(userIdGlobalVariable);
-            })
-            .catch(e => console.error(e));
-
-    }
-
-    async function returnBook(bookSeq) {
-        console.log(bookSeq);
-
-        await fetch("/turn-in?userId=" + userIdGlobalVariable + "&bookSeq=" + bookSeq, {
-            method: "POST",
-        })
-            .then(response => {
-                if (response.status !== 200) {
-                    alert("반납에 실패했습니다.");
-                    return;
-                }
-
-                alert(bookSeq + "번 책 반납에 성공하였습니다!");
-                librarySystemLogicFunction(userIdGlobalVariable);
-            })
-            .catch(e => console.error(e));
-    }
 </script>
 
 </body>

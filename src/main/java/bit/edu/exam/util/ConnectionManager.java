@@ -21,10 +21,10 @@ public class ConnectionManager {
 
         Connection con = null;
 
-        String url = "jdbc:mysql://localhost:3306/bitedu";
+        String url = "jdbc:mysql://localhost:3306/bitexam";
         String driver = "com.mysql.cj.jdbc.Driver";
         String username = "root";
-        String password = "1q2w3e4r";
+        String password = "1234";
 
         try {
             Class.forName(driver);

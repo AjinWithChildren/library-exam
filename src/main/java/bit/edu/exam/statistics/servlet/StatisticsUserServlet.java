@@ -3,6 +3,8 @@ package bit.edu.exam.statistics.servlet;
 import bit.edu.exam.statistics.dto.service.StatisticsServiceDto;
 import bit.edu.exam.statistics.service.StatisticsService;
 import bit.edu.exam.util.ObjectMapperUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
